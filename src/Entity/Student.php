@@ -23,7 +23,7 @@ class Student
     private string $surname;
 
     #[ORM\Column(length: 16, nullable: true)]
-    private ?string $middlename = null;
+    private ?string $middlename;
 
     #[ORM\Column(name: 'birthday_date', type: 'date')]
     private \DateTime $birthdayDate;
