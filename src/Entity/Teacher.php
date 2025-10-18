@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\StudentRepository;
+use App\Repository\TeacherRepository;
 use App\ValueObject\HumanGender;
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'students')]
-#[ORM\Entity(repositoryClass: StudentRepository::class)]
-class Student
+#[ORM\Table(name: 'teachers')]
+#[ORM\Entity(repositoryClass: TeacherRepository::class)]
+class Teacher
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -28,22 +27,22 @@ class Student
     private ?string $middlename;
 
     #[ORM\Column(name: 'birthday_date', type: 'date')]
-    private DateTime $birthdayDate;
+    private \DateTime $birthdayDate;
 
     #[ORM\Column(enumType: HumanGender::class)]
     private HumanGender $gender;
 
     #[ORM\Column(name: 'created_at', type: 'datetime')]
-    private readonly DateTime $createdAt;
+    private readonly \DateTime $createdAt;
 
     #[ORM\Column(name: 'updated_at', type: 'datetime')]
-    private DateTime $updatedAt;
+    private \DateTime $updatedAt;
 
     public function __construct(
         string $firstname,
         string $surname,
         ?string $middlename,
-        DateTime $birthdayDate,
+        \DateTime $birthdayDate,
         HumanGender $gender,
     ) {
         $this->firstname = $firstname;
@@ -51,8 +50,8 @@ class Student
         $this->middlename = $middlename;
         $this->birthdayDate = $birthdayDate;
         $this->gender = $gender;
-        $this->createdAt = new DateTime();
-        $this->updatedAt = new DateTime();
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
     }
 
     public function getId(): int
@@ -90,12 +89,12 @@ class Student
         $this->middlename = $middlename;
     }
 
-    public function getBirthdayDate(): DateTime
+    public function getBirthdayDate(): \DateTime
     {
         return $this->birthdayDate;
     }
 
-    public function setBirthdayDate(DateTime $birthdayDate): void
+    public function setBirthdayDate(\DateTime $birthdayDate): void
     {
         $this->birthdayDate = $birthdayDate;
     }
@@ -110,17 +109,17 @@ class Student
         $this->gender = $gender;
     }
 
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
-    public function getUpdatedAt(): DateTime
+    public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(DateTime $updatedAt): void
+    public function setUpdatedAt(\DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
