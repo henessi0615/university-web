@@ -6,10 +6,13 @@ namespace App\Entity;
 
 use App\Repository\TeacherRepository;
 use App\ValueObject\HumanGender;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'teachers')]
 #[ORM\Entity(repositoryClass: TeacherRepository::class)]
+
 class Teacher
 {
     #[ORM\Id]
@@ -32,6 +35,15 @@ class Teacher
     #[ORM\Column(enumType: HumanGender::class)]
     private HumanGender $gender;
 
+    /**
+     * @var Collection<Course>&Course[]
+     *
+     * @phpstan-var Collection<array-key, Course>
+     */
+    #[ORM\JoinColumn(referencedColumnName: 'code')]
+    #[ORM\OneToMany(targetEntity: Course::class, mappedBy: 'teacher', cascade: ['persist', 'remove'])]
+    private Collection $courses;
+
     #[ORM\Column(name: 'created_at', type: 'datetime')]
     private readonly \DateTime $createdAt;
 
@@ -50,6 +62,7 @@ class Teacher
         $this->middlename = $middlename;
         $this->birthdayDate = $birthdayDate;
         $this->gender = $gender;
+        $this->courses = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();
     }
@@ -107,6 +120,26 @@ class Teacher
     public function setGender(HumanGender $gender): void
     {
         $this->gender = $gender;
+    }
+
+    /**
+     * @return Collection<Course>&Course[]
+     *
+     * @phpstan-return Collection<array-key, Course>
+     */
+    public function getCourses(): Collection
+    {
+        return $this->courses;
+    }
+
+    public function addCourse(Course $course): void
+    {
+        $this->courses->add($course);
+    }
+
+    public function removeCourse(Course $course): void
+    {
+        $this->courses->removeElement($course);
     }
 
     public function getCreatedAt(): \DateTime

@@ -22,6 +22,10 @@ class Course
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $description;
 
+    #[ORM\JoinColumn(name: 'teacher_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Teacher::class, inversedBy: 'courses')]
+    private ?Teacher $teacher;
+
     #[ORM\Column(name: 'created_at', type: 'datetime')]
     private readonly DateTime $createdAt;
 
@@ -32,10 +36,12 @@ class Course
         string $code,
         string $title,
         ?string $description,
+        ?Teacher $teacher,
     ) {
         $this->code = $code;
         $this->title = $title;
         $this->description = $description;
+        $this->teacher = $teacher;
         $this->createdAt = new DateTime();
         $this->updatedAt = new DateTime();
     }
@@ -68,6 +74,16 @@ class Course
     public function setDescription(?string $description): void
     {
         $this->description = $description;
+    }
+
+    public function getTeacher(): ?Teacher
+    {
+        return $this->teacher;
+    }
+
+    public function setTeacher(?Teacher $teacher): void
+    {
+        $this->teacher = $teacher;
     }
 
     public function getCreatedAt(): DateTime
