@@ -1,0 +1,15 @@
+@import "variables";
+
+.opacity-50 { opacity: 50%; }
+
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: bold; }
+.font-extrabold { font-weight: 800; }
+
+.app-bg-light {
+    background: $color-bg-light;
+}
+
+#main {
+    padding: 43px 80px;
+}

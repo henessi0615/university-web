@@ -1,0 +1,14 @@
+*, p, h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@import "./variables";
+@import "./components/sidebar";
+@import "./components/dashboard";
+@import "./utilities";
+
+.app-bg-light {
+    background: $color-bg-light;
+}

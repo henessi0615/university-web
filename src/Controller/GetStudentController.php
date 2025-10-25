@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Repository\StudentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class GetStudentController extends AbstractController
@@ -43,16 +44,10 @@ final class GetStudentController extends AbstractController
         ]);
     }
 
-    #[Route('/api/students', name: 'get_students_data', methods: ['GET'])]
-    public function getStudents(): JsonResponse
+    #[Route('/students', name: 'get_students_data', methods: ['GET'])]
+    public function getStudents(): Response
     {
         $students = $this->studentRepository->findAll();
-
-        if ([] === $students) {
-            return $this->json([
-                'data' => null,
-            ]);
-        }
 
         $studentsData = [];
         foreach ($students as $student) {
@@ -61,15 +56,15 @@ final class GetStudentController extends AbstractController
                 'firstname' => $student->getFirstname(),
                 'surname' => $student->getSurname(),
                 'middlename' => $student->getMiddlename(),
-                'birthdayDate' => $student->getBirthdayDate()->format('Y-m-d'),
+                'birthdayDate' => $student->getBirthdayDate()->format('d.m.Y'),
                 'gender' => $student->getGender()->value,
-                'createdAt' => $student->getCreatedAt()->format('Y/m/d H:i:s'),
-                'updatedAt' => $student->getUpdatedAt()->format('Y/m/d H:i:s'),
+                'createdAt' => $student->getCreatedAt()->format('d.m.Y H:i:s'),
+                'updatedAt' => $student->getUpdatedAt()->format('d.m.Y H:i:s'),
             ];
         }
 
-        return $this->json([
-            'data' => $studentsData,
+        return $this->render('students/index.html.twig', [
+            'students' => $studentsData,
         ]);
     }
 }
