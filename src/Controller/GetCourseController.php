@@ -16,7 +16,7 @@ final class GetCourseController extends AbstractController
     ) {
     }
 
-    #[Route('/api/courses/{id}', name: 'get_course_data', methods: ['GET'])]
+    #[Route('/api/courses/{code}', name: 'get_course_data', methods: ['GET'])]
     public function getCourseData(string $code): JsonResponse
     {
         $course = $this->courseRepository->findOneBy([
@@ -29,13 +29,24 @@ final class GetCourseController extends AbstractController
             ]);
         }
 
+        $teacher = null;
+        if (null !== $course->getTeacher()) {
+            $teacher = [
+                'id' => $course->getTeacher()->getId(),
+                'firstname' => $course->getTeacher()->getFirstname(),
+                'surname' => $course->getTeacher()->getSurname(),
+                'middlename' => $course->getTeacher()->getMiddlename(),
+                'birthdayDate' => $course->getTeacher()->getBirthdayDate()->format('Y-m-d'),
+                'gender' => $course->getTeacher()->getGender()->value,
+            ];
+        }
+
         return $this->json([
             'data' => [
                 'code' => $course->getCode(),
                 'title' => $course->getTitle(),
                 'description' => $course->getDescription(),
-                'createdAt' => $course->getCreatedAt()->format('Y-m-d H:i:s'),
-                'updatedAt' => $course->getUpdatedAt()->format('Y-m-d H:i:s'),
+                'teacher' => $teacher,
             ],
         ]);
     }
@@ -53,12 +64,23 @@ final class GetCourseController extends AbstractController
 
         $coursesData = [];
         foreach ($courses as $course) {
+            $teacher = null;
+            if (null !== $course->getTeacher()) {
+                $teacher = [
+                    'id' => $course->getTeacher()->getId(),
+                    'firstname' => $course->getTeacher()->getFirstname(),
+                    'surname' => $course->getTeacher()->getSurname(),
+                    'middlename' => $course->getTeacher()->getMiddlename(),
+                    'birthdayDate' => $course->getTeacher()->getBirthdayDate()->format('Y-m-d'),
+                    'gender' => $course->getTeacher()->getGender()->value,
+                ];
+            }
+
             $coursesData[] = [
                 'code' => $course->getCode(),
                 'title' => $course->getTitle(),
                 'description' => $course->getDescription(),
-                'createdAt' => $course->getCreatedAt()->format('Y-m-d H:i:s'),
-                'updatedAt' => $course->getUpdatedAt()->format('Y-m-d H:i:s'),
+                'teacher' => $teacher,
             ];
         }
 

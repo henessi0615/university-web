@@ -29,6 +29,15 @@ final class GetTeacherController extends AbstractController
             ]);
         }
 
+        $coursesData = [];
+        foreach ($teacher->getCourses() as $course) {
+            $coursesData[] = [
+                'code' => $course->getCode(),
+                'title' => $course->getTitle(),
+                'description' => $course->getDescription(),
+            ];
+        }
+
         return $this->json([
             'data' => [
                 'teacherId' => $teacher->getId(),
@@ -37,8 +46,7 @@ final class GetTeacherController extends AbstractController
                 'middlename' => $teacher->getMiddlename(),
                 'birthdayDate' => $teacher->getBirthdayDate()->format('Y-m-d'),
                 'gender' => $teacher->getGender()->value,
-                'createdAt' => $teacher->getCreatedAt()->format('Y/m/d H:i:s'),
-                'updatedAt' => $teacher->getUpdatedAt()->format('Y/m/d H:i:s'),
+                'courses' => $coursesData,
             ],
         ]);
     }
@@ -56,6 +64,15 @@ final class GetTeacherController extends AbstractController
 
         $teachersData = [];
         foreach ($teachers as $teacher) {
+            $coursesData = [];
+            foreach ($teacher->getCourses() as $course) {
+                $coursesData[] = [
+                    'code' => $course->getCode(),
+                    'title' => $course->getTitle(),
+                    'description' => $course->getDescription(),
+                ];
+            }
+
             $teachersData[] = [
                 'teacherId' => $teacher->getId(),
                 'firstname' => $teacher->getFirstname(),
@@ -63,8 +80,7 @@ final class GetTeacherController extends AbstractController
                 'middlename' => $teacher->getMiddlename(),
                 'birthdayDate' => $teacher->getBirthdayDate()->format('Y-m-d'),
                 'gender' => $teacher->getGender()->value,
-                'createdAt' => $teacher->getCreatedAt()->format('Y/m/d H:i:s'),
-                'updatedAt' => $teacher->getUpdatedAt()->format('Y/m/d H:i:s'),
+                'courses' => $coursesData,
             ];
         }
 
